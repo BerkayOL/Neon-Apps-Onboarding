@@ -1,0 +1,52 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8664808172354916338",
+      "lastPropertyId": "5:466437333972790417",
+      "name": "CoralFragment",
+      "properties": [
+        {
+          "id": "1:1197685379989361569",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6224737454858338675",
+          "name": "species",
+          "type": 9
+        },
+        {
+          "id": "3:1034631861793254341",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "4:2507542947118061537",
+          "name": "myth",
+          "type": 9
+        },
+        {
+          "id": "5:466437333972790417",
+          "name": "title",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:8664808172354916338",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
