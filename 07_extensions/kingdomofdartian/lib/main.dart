@@ -1,3 +1,10 @@
+import 'extensions/palindrome_checker.dart';
+import 'extensions/date_difference.dart';
+import 'extensions/prime_checker.dart';
+import 'extensions/bool_logic.dart';
+import 'extensions/set_extensions.dart';
+import 'extensions/map_extensions.dart';
+
 void main() {
   int numberOne = 7;
   int numberTwo = 10;
@@ -43,63 +50,4 @@ void main() {
     "Lannister": ["Tywin", "Jaime", "Cersei"],
   };
   print(nufus.toCensusReport());
-}
-
-//Palindrome Kontrolü.
-extension PalindromeChecker on String {
-  bool get isPalindrome {
-    String cleaned = this.replaceAll(RegExp(r'[\W_]+'), '').toLowerCase();
-    return cleaned == cleaned.split('').reversed.join('');
-  }
-}
-
-//Tarih Farkı hesaplama
-extension DateDifference on DateTime {
-  int differenceInDays(DateTime other) {
-    return this.difference(other).inDays.abs();
-  }
-}
-
-//Asal sayı kontrolü
-extension PrimeChecker on int {
-  bool get isPrime {
-    if (this <= 1) return false;
-    for (int i = 2; i <= this ~/ 2; i++) {
-      if (this % i == 0) return false;
-    }
-    return true;
-  }
-}
-
-//Bool operatörleri ve durum metni
-extension BoolLogic on bool {
-  bool operator &(bool other) => this && other;
-  bool operator |(bool other) => this || other;
-  bool operator ^(bool other) => this != other;
-  bool xor(bool other) => this ^ other;
-  String toStatus(String trueText, String falseText) {
-    return this ? trueText : falseText;
-  }
-}
-
-//Set ve Map extension'ları
-extension SetExtensions<T> on Set<T> {
-  void toggle(T item) {
-    if (this.contains(item)) {
-      this.remove(item);
-    } else {
-      this.add(item);
-    }
-  }
-}
-
-// Map için özel bir raporlama formatı
-extension MapExtensions on Map<String, List<String>> {
-  String toCensusReport() {
-    String report = "--- DARTIA NÜFUS SAYIMI ---\n";
-    this.forEach((key, value) {
-      report += "$key: $value\n";
-    });
-    return report;
-  }
 }

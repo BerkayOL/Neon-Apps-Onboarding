@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:neonappsmembermodel/models/contact_information.dart';
-import 'package:neonappsmembermodel/models/neon_academy_member.dart';
 import 'package:collection/collection.dart';
+import 'package:neonappsmembermodel/details/build_detail_row.dart'; // Importu unutma
+import 'package:neonappsmembermodel/models/contact_information_model.dart';
+import 'package:neonappsmembermodel/models/mentor.dart';
+import 'package:neonappsmembermodel/models/neon_academy_member_model.dart';
+import 'package:neonappsmembermodel/models/horoscope.dart';
+import 'package:neonappsmembermodel/models/member_level.dart';
+import 'package:neonappsmembermodel/extensions/horoscope_extension.dart';
+import 'package:neonappsmembermodel/models/team.dart';
 
 void main() {
   runApp(const MyApp());
-}
-
-class Mentor extends NeonAcademyMember {
-  final String mentorLevel;
-  Mentor({
-    required super.fullName,
-    required super.title,
-    required super.homeTown,
-    required super.age,
-    required super.contactInformation,
-    required super.horoscope,
-    required super.memberLevel,
-    required this.mentorLevel,
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -26,18 +18,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Neon Academy',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6200EE)),
+        cardTheme: CardThemeData(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: Colors.grey.shade200),
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Neon Academy Members'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -45,69 +45,75 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<NeonAcademyMember> members = [
-    NeonAcademyMember(
+  final List<NeonAcademyMemberModel> members = [
+    const NeonAcademyMemberModel(
       fullName: 'Berkay Ay',
       title: 'Flutter Developer Trainee',
       homeTown: 'Istanbul',
       age: 22,
-      contactInformation: ContactInformation(
+      contactInformation: ContactInformationModel(
         phoneNumber: '535-859-7181',
         email: 'berkay81341@gmail.com',
       ),
       horoscope: Horoscope.aries,
       memberLevel: MemberLevel.trainee,
+      team: Team.flutterDevelopmentTeam,
     ),
-    NeonAcademyMember(
+    const NeonAcademyMemberModel(
       fullName: 'Halim Parlak',
       title: 'Backend Developer',
       homeTown: 'Istanbul',
       age: 23,
-      contactInformation: ContactInformation(
+      contactInformation: ContactInformationModel(
         phoneNumber: '535-222-3344',
         email: 'halimparlak@gmail.com',
       ),
       horoscope: Horoscope.aquarius,
       memberLevel: MemberLevel.junior,
+      team: Team.backendDevelopmentTeam,
     ),
-    NeonAcademyMember(
+    const NeonAcademyMemberModel(
       fullName: 'Yunus Emre Dangaç',
       title: 'Human Resources Specialist',
       homeTown: 'Istanbul',
       age: 25,
-      contactInformation: ContactInformation(
+      contactInformation: ContactInformationModel(
         phoneNumber: '535-999-8877',
         email: 'yunusemredangac@gmail.com',
       ),
       horoscope: Horoscope.virgo,
       memberLevel: MemberLevel.mentor,
+      team: Team.humanResourcesTeam,
     ),
-    NeonAcademyMember(
+    const NeonAcademyMemberModel(
       fullName: 'Fırat Gezgin',
       title: 'iOS Developer',
       homeTown: 'Istanbul',
       age: 23,
-      contactInformation: ContactInformation(
+      contactInformation: ContactInformationModel(
         phoneNumber: '535-854-4543',
         email: 'fıratgezgn@gmail.com',
       ),
       horoscope: Horoscope.aquarius,
       memberLevel: MemberLevel.junior,
+      team: Team.iosDevelopmentTeam,
     ),
   ];
+
   @override
   void initState() {
     super.initState();
     _runPart1Challenges();
   }
 
-  void _runPart1Challenges() {
-    void printMembers(String operation) {
-      print('--- $operation ---');
-      print(members.map((fullName) => fullName.fullName).toList());
-    }
+  void printMembers(String operation) {
+    print('--- $operation ---');
+    print(members.map((member) => member.fullName).toList());
+  }
 
+  void _runPart1Challenges() {
     printMembers('Initial Members');
+
     if (members.length >= 3) {
       members.removeAt(2);
       printMembers('3. ÜYE SİLİNDİ!');
@@ -116,31 +122,39 @@ class _MyHomePageState extends State<MyHomePage> {
       printMembers('İsme Göre Sırala (Z-A)');
       setState(() {});
     }
+
     final olderThan24 = members.where((member) => member.age > 24).toList();
     print('--- 24 YAŞINDAN BÜYÜK ÜYELER ---');
-    olderThan24.forEach((member) => print(member.fullName));
+    for (var member in olderThan24) {
+      print(member.fullName);
+    }
+
     final iosDevCount = members
         .where((member) => member.title.contains('iOS Developer'))
         .length;
     print('--- Toplam iOS Geliştirici Sayısı: $iosDevCount ---');
+
     final index = members.indexWhere(
       (member) => member.fullName == 'Berkay Ay',
     );
     if (index != -1) {
       print('--- Berkay Ay Üyesinin İndeksi: $index ---');
     }
-    Mentor mentor = Mentor(
+
+    // Mentor da const olarak eklendi
+    const mentor = Mentor(
       fullName: 'Yunus Emre Dangaç',
       title: 'Human Resources Specialist',
       homeTown: 'Istanbul',
       age: 25,
-      contactInformation: ContactInformation(
+      contactInformation: ContactInformationModel(
         phoneNumber: '535-999-8877',
         email: 'yunusemredangac@gmail.com',
       ),
       horoscope: Horoscope.virgo,
       memberLevel: MemberLevel.mentor,
       mentorLevel: 'Senior Mentor',
+      team: Team.humanResourcesTeam,
     );
     members.add(mentor);
     printMembers('Mentor Eklendi');
@@ -161,30 +175,34 @@ class _MyHomePageState extends State<MyHomePage> {
     print('Name Length: ${longNameMembers.fullName.length}');
 
     final totalAge = members.fold(0, (total, member) => total + member.age);
-    totalAge > 0
-        ? print('--- Üyelerin Yaş Ortalaması ---\n${totalAge / members.length}')
-        : print('--- Üye bulunamadı, yaş ortalaması hesaplanamaz ---');
+    if (totalAge > 0) {
+      print('--- Üyelerin Yaş Ortalaması ---\n${totalAge / members.length}');
+    } else {
+      print('--- Üye bulunamadı, yaş ortalaması hesaplanamaz ---');
+    }
 
     final otherList = members
         .map((member) => member.contactInformation)
         .toList();
     print('--- Diğer Liste (Contact Information) ---');
-    otherList.forEach((contact) {
+    for (var contact in otherList) {
       print('Phone: ${contact.phoneNumber}, Email: ${contact.email}');
-    });
+    }
 
     members.removeWhere((member) => member.memberLevel == MemberLevel.mentor);
     printMembers('Mentorlar Silindi');
+
     print('\n--- BURÇLARA GÖRE GRUPLAMA ---');
     final groupedByHoroscope = groupBy(
       members,
-      (NeonAcademyMember m) => m.horoscope,
+      (NeonAcademyMemberModel m) => m.horoscope,
     );
 
     groupedByHoroscope.forEach((horoscope, memberList) {
       print('${horoscope.name.toUpperCase()}:');
       print(memberList.map((m) => m.fullName).toList());
     });
+
     print('--- EN ÇOK TEKRAR EDEN MEMLEKET ---');
     final mostCommonHomeTown = members
         .map((member) => member.homeTown)
@@ -196,19 +214,21 @@ class _MyHomePageState extends State<MyHomePage> {
         .reduce((a, b) => a.value > b.value ? a : b)
         .key;
     print('En çok tekrar eden memleket: $mostCommonHomeTown');
+
     print('''\n--- ÜYELERİ UNVANA GÖRE GRUPLAMA ---''');
     groupBy(members, (member) => member.title).forEach((title, memberList) {
       print('--- $title Telefon Numaraları ---');
-      // İletişim bilgilerinden oluşan yeni dizi
       final contactList = memberList.map((m) => m.contactInformation).toList();
-      // Telefon numaralarını yazdırma
-      contactList.forEach((contact) => print(contact.phoneNumber));
+      for (var contact in contactList) {
+        print(contact.phoneNumber);
+      }
     });
 
     members.sort((a, b) => b.memberLevel.index.compareTo(a.memberLevel.index));
     printMembers(
       'Üyeler Üye Seviyesine Göre Sıralandı (En Yüksekten En Düşüğe)',
     );
+
     members.sort((a, b) => b.age.compareTo(a.age));
     printMembers('Üyeler Yaşa Göre Sıralandı. (En Büyükten Küçüğe)');
   }
@@ -216,49 +236,125 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.black,
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Roboto',
+        title: Text(
+          widget.title.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.1,
+          ),
         ),
-        title: Text('Neon Apps Member System'),
       ),
-      body: ListView.builder(
-        itemCount: members.length, // Listenin tamamını dönmesi için
+      body: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: members.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final member = members[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: ExpansionTile(
-              title: Text(member.fullName),
-              subtitle: Text(member.title),
-              children: [
-                ListTile(title: Text('Home Town: ${member.homeTown}')),
-                ListTile(title: Text('Age: ${member.age}')),
-                ListTile(
-                  title: Text(
-                    'Phone: ${member.contactInformation.phoneNumber}',
-                  ),
+            child: Theme(
+              data: Theme.of(
+                context,
+              ).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                tilePadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
                 ),
-                ListTile(
-                  title: Text('Email: ${member.contactInformation.email}'),
-                ),
-                ListTile(title: Text('Horoscope: ${member.horoscope.name}')),
-                ListTile(title: Text('Level: ${member.memberLevel.name}')),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+                leading: CircleAvatar(
+                  backgroundColor: Colors.deepPurple.shade50,
                   child: Text(
-                    'Insight: ${member.zodiacMoment}',
+                    member.fullName[0],
                     style: const TextStyle(
-                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
                       color: Colors.deepPurple,
                     ),
                   ),
                 ),
-              ],
+                title: Text(
+                  member.fullName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+                subtitle: Text(
+                  member.title,
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                ),
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        BuildDetailRow(
+                          icon: Icons.location_on_outlined,
+                          label: 'Home Town',
+                          value: member.homeTown,
+                        ),
+                        BuildDetailRow(
+                          icon: Icons.cake_outlined,
+                          label: 'Age',
+                          value: '${member.age}',
+                        ),
+                        BuildDetailRow(
+                          icon: Icons.phone_outlined,
+                          label: 'Phone',
+                          value: member.contactInformation.phoneNumber,
+                        ),
+                        BuildDetailRow(
+                          icon: Icons.email_outlined,
+                          label: 'Email',
+                          value: member.contactInformation.email,
+                        ),
+                        BuildDetailRow(
+                          icon: Icons.auto_awesome_outlined,
+                          label: 'Horoscope',
+                          value: member.horoscope.name.toUpperCase(),
+                        ),
+                        BuildDetailRow(
+                          icon: Icons.military_tech_outlined,
+                          label: 'Level',
+                          value: member.memberLevel.name.toUpperCase(),
+                        ),
+                        const Divider(height: 24),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.tips_and_updates,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                member.horoscope.zodiacMoment,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.deepPurple,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

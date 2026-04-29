@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'services/shared_preferences_helper.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefsHelper.instance.init();
   runApp(const MyApp());
 }
 
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hayalimdeki Seyahat',
-      debugShowCheckedModeBanner: false, // Sağ üstteki debug şeridini kaldırır
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
       ),
@@ -32,15 +34,14 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _countController = TextEditingController();
   bool _hasVisited = false;
+
   Future<void> _saveMemory() async {
-    final prefs = await SharedPreferences.getInstance(); // Hafızaya eriş
+    await SharedPrefsHelper.instance.saveTripData(
+      place: _placeController.text,
+      count: int.tryParse(_countController.text) ?? 0,
+      hasVisited: _hasVisited,
+    );
 
-    // Verileri anahtar-değer (key-value) şeklinde kaydet
-    await prefs.setString('dream_place', _placeController.text);
-    await prefs.setInt('visit_count', int.tryParse(_countController.text) ?? 0);
-    await prefs.setBool('has_visited', _hasVisited);
-
-    // Kayıt başarılı olunca ekranda küçük bir bildirim (SnackBar) göster
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Hedef Hafızaya Kaydedildi!')),
@@ -48,18 +49,14 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
     }
   }
 
-  Future<void> _loadMemory() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Ekranı güncellemek için setState kullanıyoruz
+  void _loadMemory({bool showSnackbar = true}) {
     setState(() {
-      // Hafızada veri yoksa sağ taraftaki varsayılan değerleri (?? '') kullan
-      _placeController.text = prefs.getString('dream_place') ?? '';
-      _countController.text = (prefs.getInt('visit_count') ?? 0).toString();
-      _hasVisited = prefs.getBool('has_visited') ?? false;
+      _placeController.text = SharedPrefsHelper.instance.dreamPlace;
+      _countController.text = SharedPrefsHelper.instance.visitCount.toString();
+      _hasVisited = SharedPrefsHelper.instance.hasVisited;
     });
 
-    if (mounted) {
+    if (showSnackbar && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Hafızadan Veriler Yüklendi!')),
       );
@@ -69,10 +66,9 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
   @override
   void initState() {
     super.initState();
-    _loadMemory();
+    _loadMemory(showSnackbar: false);
   }
 
-  //Memory Leak Önlemek için dispose metodunu eklendi.
   @override
   void dispose() {
     _placeController.dispose();
@@ -97,7 +93,6 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            // TextField, kullanıcıya hayalindeki yerin adını sormak için kullanıldı
             TextField(
               controller: _placeController,
               decoration: const InputDecoration(
@@ -105,8 +100,7 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            // TextField, kullanıcıya bu yere kaç kere gittiğini sormak için kullanıldı
+            const SizedBox(height: 20),
             TextField(
               controller: _countController,
               keyboardType: TextInputType.number,
@@ -115,8 +109,7 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            // SwitchListTile, kullanıcıya bu yere daha önce gidip gitmediğini sormak için kullanıldı
+            const SizedBox(height: 20),
             SwitchListTile(
               title: const Text('Bu yere daha önce gitmiş misiniz?'),
               value: _hasVisited,
@@ -126,7 +119,6 @@ class _DreamTripScreenState extends State<DreamTripScreen> {
                 });
               },
             ),
-            // Butonları yan yana yerleştirmek için Row widget'ı kullanıldı
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

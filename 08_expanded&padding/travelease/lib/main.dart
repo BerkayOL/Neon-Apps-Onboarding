@@ -1,257 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:travelease/models/city_model.dart';
+import 'package:travelease/widgets/city_card.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-//Kod biraz kendini tekrar etti daha iyisi ayarlanabilirdi fakat task için yeterli.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Travel Ease',
+      debugShowCheckedModeBanner: false, // Tasarımı bozan banner'ı kapattık
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true, // Modern UI için Material 3 aktif
       ),
       home: const MyHomePage(title: 'Travel Ease'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
+  static const List<CityModel> cities = [
+    CityModel(
+      name: "Berlin",
+      description: "The Capital of Germany",
+      imageUrl: "assets/images/berlin.jpg",
+    ),
+    CityModel(
+      name: "İstanbul",
+      description: "The Capital of Turkey",
+      imageUrl: "assets/images/istanbul.jpg",
+    ),
+    CityModel(
+      name: "New York",
+      description: "The Big Apple",
+      imageUrl: "assets/images/newyork.png",
+    ),
+    CityModel(
+      name: "Selanik",
+      description: "The City of Thessaloniki",
+      imageUrl: "assets/images/selanik.jpg",
+    ),
+    CityModel(
+      name: "Moscow",
+      description: "The Capital of Russia",
+      imageUrl: "assets/images/moscow.jpg",
+    ),
+    CityModel(
+      name: "Paris",
+      description: "The City of Light",
+      imageUrl: "assets/images/paris.jpg",
+    ),
+  ];
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.bold,
-          fontFamily: 'Antonio',
         ),
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/paris.jpg',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(height: 8),
-
-                          const Text(
-                            "Paris, France",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/berlin.jpg',
-                            fit: BoxFit.cover,
-                            height:
-                                150, // Metne yer kalsın diye biraz kısalttım
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ), // Resim ile yazı arasına ufak bir boşluk
-
-                          const Text(
-                            "Berlin, Germany",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Divider(color: Colors.grey),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/newyork.png',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(height: 8),
-
-                          const Text(
-                            "New York, USA",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/moscow.jpg',
-                            fit: BoxFit.cover,
-                            height:
-                                150, // Metne yer kalsın diye biraz kısalttım
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ), // Resim ile yazı arasına ufak bir boşluk
-
-                          const Text(
-                            "Moscow, Russia",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Divider(color: Colors.grey),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/selanik.jpg',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(height: 8),
-
-                          const Text(
-                            "Selanik, Greece",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        print("Tıklandı!");
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/istanbul.jpg',
-                            fit: BoxFit.cover,
-                            height:
-                                150, // Metne yer kalsın diye biraz kısalttım
-                            width: double.infinity, // Karta tam sığsın diye
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ), // Resim ile yazı arasına ufak bir boşluk
-
-                          const Text(
-                            "Istanbul, Turkey",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 16.0,
+          crossAxisSpacing: 16.0,
+          childAspectRatio: 0.8,
         ),
+        itemCount: cities.length,
+        itemBuilder: (context, index) {
+          final city = cities[index];
+          return CityCard(
+            cityName: city.name,
+            description: city.description,
+            imageUrl: city.imageUrl,
+          );
+        },
       ),
     );
   }

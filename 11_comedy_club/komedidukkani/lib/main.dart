@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komedidukkani/widgets/show_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Komedi Dükkanı',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF121212),
+        scaffoldBackgroundColor: const Color(0xFF0D0D12),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurpleAccent,
           brightness: Brightness.dark,
@@ -24,15 +25,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  final List<String> pastEvents = const [
+    'assets/images/tolgacevik01.jpg',
+    'assets/images/tolgacevik02.jpg',
+    'assets/images/tolgacevik03.jpg',
+  ];
 
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,244 +44,196 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          widget.title,
+          title,
           style: const TextStyle(
             color: Colors.pinkAccent,
-            fontSize: 28,
+            fontSize: 30,
             fontFamily: 'Antonio Regular',
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
           ),
         ),
       ),
       body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.pinkAccent.withOpacity(0.3)),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF1E1E26), Color(0xFF14141A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: Colors.pinkAccent.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.pinkAccent.withOpacity(0.1),
-                      blurRadius: 10,
-                      spreadRadius: 2,
+                      color: Colors.pinkAccent.withValues(alpha: 0.12),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                child: const ListTile(
-                  contentPadding: EdgeInsets.all(16),
-                  title: Text(
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
+                  title: const Text(
                     'Komedi Dükkanı\'na Hoş Geldiniz',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
                       fontFamily: 'Antonio Regular',
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   subtitle: Padding(
-                    padding: EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
                       'Türkiye\'nin en çok güldüren (ve en çok linç yiyen) stand-up kulübü.',
                       style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontFamily: 'Antonio Regular',
+                        color: Colors.grey.shade400,
+                        fontSize: 15,
+                        height: 1.4,
                       ),
                     ),
                   ),
-                  leading: Icon(
-                    Icons.theater_comedy,
-                    color: Colors.pinkAccent,
-                    size: 40,
+                  leading: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.pinkAccent.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.theater_comedy,
+                      color: Colors.pinkAccent,
+                      size: 32,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 25),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/images/sahne.jpg',
-                  height: 220,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  fit: BoxFit.cover,
+              const SizedBox(height: 35),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.deepPurpleAccent.withValues(alpha: 0.15),
+                      blurRadius: 25,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: Image.asset(
+                    'assets/images/sahne.jpg',
+                    height: 220,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Gelecek Şovlar',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 26,
                       fontFamily: 'Antonio Regular',
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
                       color: Colors.white,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              _buildShowCard(
-                'İstanbul Gösterisi',
-                'Tarih: 15 Eylül 2026',
-                'Bilet: 150₺',
+              const SizedBox(height: 20),
+              const ShowCard(
+                title: 'İstanbul Gösterisi',
+                date: 'Tarih: 15 Eylül 2026',
+                priceInfo: 'Bilet: 150₺',
               ),
-              const SizedBox(height: 15),
-              _buildShowCard(
-                'Ankara Özel',
-                'Tarih: 20 Eylül 2026',
-                'Bilet: Erkek ödüyorsa 100₺, Kadın ödüyorsa 200₺',
+              const SizedBox(height: 16),
+              const ShowCard(
+                title: 'Ankara Özel',
+                date: 'Tarih: 20 Eylül 2026',
+                priceInfo: 'Bilet: Erkek ödüyorsa 100₺, Kadın ödüyorsa 200₺',
               ),
-              const SizedBox(height: 15),
-              _buildShowCard(
-                'İzmir Finali',
-                'Tarih: 25 Eylül 2026',
-                'Bilet: 150₺',
+              const SizedBox(height: 16),
+              const ShowCard(
+                title: 'İzmir Finali',
+                date: 'Tarih: 25 Eylül 2026',
+                priceInfo: 'Bilet: 150₺',
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Geçmiş Etkinlikler',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 26,
                       fontFamily: 'Antonio Regular',
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
                       color: Colors.white,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               SizedBox(
-                height: 140,
-                child: ListView(
+                height: 150,
+                child: ListView.separated(
+                  physics: const ClampingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: [
-                    // Soldan 1. FOTOĞRAF - DÜZELTİLDİ
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/tolgacevik01.jpg',
-                        width: 220,
-                        height: 140,
-                        fit: BoxFit.cover,
-                        alignment: Alignment
-                            .topCenter, // Yüzü göstermek için yukarı hizalandı
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  itemCount: pastEvents.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 16),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.4),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 15),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/tolgacevik02.jpg',
-                        width: 220,
-                        height: 140,
-                        fit: BoxFit.cover,
-                        // Ortada durması iyiyse varsayılan Alignment.center kalabilir.
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          pastEvents[index],
+                          width: 240,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 15),
-                    // Soldan 3. FOTOĞRAF - DÜZELTİLDİ
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/tolgacevik03.jpg',
-                        width: 220,
-                        height: 140,
-                        fit: BoxFit.cover,
-                        alignment: Alignment
-                            .topCenter, // Yüzü göstermek için yukarı hizalandı
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 25),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShowCard(String title, String date, String priceInfo) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.deepPurpleAccent.withOpacity(0.3)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/tolgacevikbilet.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    date,
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    priceInfo,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.pinkAccent,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurpleAccent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text('Bilet Al'),
-            ),
-          ],
         ),
       ),
     );

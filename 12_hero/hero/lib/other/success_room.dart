@@ -24,13 +24,42 @@ class SuccessRoom extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: Center(
-        child: Text(
-          'Congratulations, you did it!',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.lightGreenAccent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0A1A0A), Colors.black],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.emoji_events_rounded,
+                size: 80,
+                color: Color(0xFF00FF88),
+              ),
+              SizedBox(height: 24),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xFF00FF88).withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Congratulations, you did it!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Antonio',
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF00FF88),
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
